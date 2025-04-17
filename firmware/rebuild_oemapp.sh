@@ -107,7 +107,7 @@ EOF
 
 # pack UBI
 echo "Packe neues UBI: $OUT_UBI"
-ubinize -o "$OUT_UBI" -m "$MIN_IO" -p "$PEB_SIZE" -O "$DATA_OFF" "$UBI_CFG"
+ubinize -o "$OUT_UBI" -m "$MIN_IO" -p "$PEB_SIZE" -O "$DATA_OFF" -s "$MIN_IO" "$UBI_CFG"
 
 # binwalk validation
 echo "Validiere per binwalk gegen Original"

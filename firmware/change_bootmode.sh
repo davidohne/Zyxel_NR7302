@@ -51,7 +51,7 @@ OS="$(uname)"
 if [[ "$OS" == "Linux" ]]; then
   STTY_CMD="stty -F \"$PORT\" raw 115200 cs8 -cstopb -parenb"
 elif [[ "$OS" == "Darwin" ]]; then
-  STTY_CMD="stty \"$PORT\" raw 115200 cs8 -cstopb -parenb"
+  STTY_CMD="stty -f \"$PORT\" raw 115200 cs8 -cstopb -parenb"
 else
   echo "Unsupported OS: $OS"
   exit 1
@@ -64,7 +64,6 @@ eval $STTY_CMD
 exec 3<> "$PORT"
 
 # 1) Prompt user to power on
-echo "Close all interfering console windows."
 echo "Please power on the router."
 
 # 2) Wait for first line from device

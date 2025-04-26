@@ -93,7 +93,7 @@ BUILD_MAP = {
     "fotaconfig.xml": {"type": "fotaconfig", "update_md5": True},
     "NON-HLOS.ubi": {"type": "passthrough"}
 }
-OUTPUT_FILENAME = "100ACHA4b0_F0_custom_for_router.bin"
+OUTPUT_FILENAME = "100ACHA4b5_F0_custom_for_router.bin"
 EXPECTED_MODEL_ID = 0x7302  # Correct model ID
 
 # --- Helper -------------------------------------------------------------

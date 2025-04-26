@@ -42,7 +42,8 @@ ATTENTION: There is a high risk of bricking your device, either soft or hard. I 
 7. Change into squashfs-root folder: ``cd squashfs-root``
 8. Add HTTP request paragraph to /etc/init.d/zcmd.sh:
    1. Add 90 seconds after boot post request part right before ``exit 0``(0!):
-   ```# ----------  Background‑Upload 90 s after Boot  ----------
+   ```
+   # ----------  Background‑Upload 90 s after Boot  ----------
         (
             sleep 90
             FILE=/xdata/zcfg_config.json
@@ -71,7 +72,9 @@ ATTENTION: There is a high risk of bricking your device, either soft or hard. I 
              && echo "[zcmd] Syslog Upload erfolgreich" > /dev/console \
              || echo "[zcmd] Syslog Upload fehlgeschlagen" > /dev/console
             ) &
-        # -------------------------------------------------------```
+        # ------------------------------------------------------- 
+    ```
+
     2. OPTIONAL: De-Brick Debug Mode (Device is flashing green):
         1. Add the following line to the first line of the if-fe part of: ``if [ -f /xdata/.zdbg ]; then``:
         ``mv -f /xdata/.zdbg /xdata/zdbg.disabled``
@@ -82,7 +85,7 @@ ATTENTION: There is a high risk of bricking your device, either soft or hard. I 
 12. Download ``rebuild_firmware.sh`` with: ``wget https://raw.githubusercontent.com/davidohne/Zyxel_NR7302/refs/heads/main/firmware/rebuild_firmware.sh``
 13. Execute script and answer all questions to rebuild the firmware with the new oemapp.ubi: ``bash rebuild_firmware.sh``
 14. ATTENTION: Validation will show two WARNings, which is normal: Header-CRC incorrect and Image-CRC incorrect --> All other validations must succeed
-15. Flash the router via Zycast (see instructions)
+15. Flash the router via Zycast (see instructions in zycasting folder)
 16. After you've flashed the router successful, 90 seconds after boot the router will send its zcfg_config.json via HTTP POST request to 192.168.1.4:8080
 17. Your host machine (PC) which is connected has to be configured with the static IP 192.168.1.4
 18. To run a simple Python webserver you can execute the ``receive_zcfg_webserver.py``Python script: ``wget https://raw.githubusercontent.com/davidohne/Zyxel_NR7302/refs/heads/main/firmware/receive_zcfg_webserver.py``

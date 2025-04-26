@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Not yet working... Normally it shouldn't be a problem to change the boot mode manually: 
+# Keep sending CTRL+C to the UART serial adapter until the boot stops and then enter recovery, 
+# fastboot, PINTEST, charge to the console and press enter -> You won't see any input
+
 set -euo pipefail
 
 usage() {

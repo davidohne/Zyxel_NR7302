@@ -12,8 +12,8 @@ Usage:
   $0 --repack|-r <original.ubi> <squashfs-root> <output.ubi>
 
 Options:
-  -e, --extract   Extrahiere UBI und entpacke SquashFS
-  -r, --repack    Baue neues UBI aus squashfs-root
+  -e, --extract   Extract UBI and unpack SquashFS
+  -r, --repack    Build new UBI from squashfs-root
 EOF
 }
 
@@ -52,7 +52,7 @@ case "$MODE" in
   *) show_usage; exit 1;;
 esac
 
-# common dependencies for repack
+# common dependencies check!
 declare -A apt_deps=( [mksquashfs]=squashfs-tools [ubinize]=mtd-utils [binwalk]=binwalk )
 declare -A pip_deps=( [ubireader_display_info]="git+https://github.com/onekey-sec/ubi_reader.git" )
 for cmd in "${!apt_deps[@]}"; do

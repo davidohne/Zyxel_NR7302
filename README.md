@@ -1,5 +1,10 @@
+# Zyxel NR7302 Findings 
+
+This is a collection of firmware- and hardware-related findings for the Zyxel NR7302 router. Most of these findings could also be applied to the NR7301 and NR7303.
 
 ## Admin & Root Password Retrieval
+
+ATTENTION: There is a high risk of bricking your device, either soft or hard. I absolutely do not accept any responsibility. If you follow any of these instructions, you must accept that your device may become unusable. Know what you are doing. (However, if you know how to solder, the device is almost impossible to brick.)
 
 ### Goal
 

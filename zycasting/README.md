@@ -1,6 +1,6 @@
 # Flashing Firmwares on non-acceptable or soft-bricked devices
 
-Instructions and findings by Chris K. / xpla@lteforum.at
+Instructions and findings by Chris / xpla@lteforum.at
 
 ## How-To zycast
 
@@ -40,28 +40,30 @@ Instructions and findings by Chris K. / xpla@lteforum.at
 
 > It is recommended, that the Zyxel-Router and your computer are connected via a switch.
 > Connecting it directly via the PoE-Injector might work, but more often not.
-> Also make sure, that the devices are the only ones connected to the switch.<<<
+> Also make sure, that the devices are the only ones connected to the switch.
 
 > IMPORTANT: The Zyxel-Router must be powered off till instructed otherwise 
 
 ## Flash the firmware
 1. Run command: ``sudo ./zycast_flash -i enp2s0 -t 20 -f 100ACHA4b5_F0_custom_for_router.bin`` 
+
    ![alt text](imgs/screenshot_zycast_06.png)
    - IMPORTANT: Replace "enp2s0" with the name of your LAN Interface
    - Replace 100ACHA4b5_F0_custom_for_router.bin with the name of your modified firmware
    - The output should look like this: 
+- 
      ![alt text](imgs/screenshot_zycast_07.png)
 
-1. Now power-on your Zyxel-Router by connecting a PoE-Source <<<
+2. Now power-on your Zyxel-Router by connecting a PoE-Source <<<
    - The router will start its boot process and must enter the following state
    - LEDs are blinking one after another in orange
    - After some time, both LEDs are blinking orange more or less simultaneously
    - Grab a coffee, the process can take one to two hours
    - After the firmware has been flashed, the router will switch both LEDs to constant green
 
-2. Congratulations, you've successfully flashed the modified firmware
-3. Exit the zycast on your computer by pressing CTRL+C
-4. Spin-Up the Webserver to receive the encrypted passwords
+3. Congratulations, you've successfully flashed the modified firmware
+4. Exit the zycast on your computer by pressing CTRL+C
+5. Spin-Up the Webserver to receive the encrypted passwords
 
 
 * https://github.com/openwrt/firmware-utils/blob/master/src/zycast.c

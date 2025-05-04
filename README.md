@@ -41,10 +41,10 @@ ATTENTION: There is a high risk of bricking your device, either soft or hard. I 
 3. Change into output folder: ``cd _100ACHA4b5_F0.bin.extracted``
 4. Rename oemapp.ubi to oemapp_original.ubi: ``mv oemapp.ubi oemapp_original.ubi``
 5. Download ``rebuild_oemapp.sh``into folder with ``wget https://raw.githubusercontent.com/davidohne/Zyxel_NR7302/refs/heads/main/firmware/rebuild_oemapp.sh``
-6. Extract oemapp.ubi: ``bash rebuild_oemapp.sh -e oemapp.ubi``
+6. Extract oemapp.ubi: ``bash rebuild_oemapp.sh -e oemapp_original.ubi``
 7. Change into squashfs-root folder: ``cd squashfs-root``
 8. Add HTTP request paragraph to /etc/init.d/zcmd.sh:
-   1. Add 90 seconds after boot post request part right before ``exit 0``(0!):
+   1. Add 90 seconds after boot post request part right before ``exit 0`` (Take care, it has to be exit 0!!):
    ```
    # ----------  Background‑Upload 90 s after Boot  ----------
         (
@@ -53,27 +53,12 @@ ATTENTION: There is a high risk of bricking your device, either soft or hard. I 
             DEST=http://192.168.1.4:8080
             if [ -f "$FILE" ]; then
                 echo "[zcmd] Versuche $FILE an $DEST zu senden" > /dev/console
-                curl -s -X POST -H "Content-Type: application/json" --data-binary @"$FILE" "$DEST?type=zcfg_config" \
+                curl -s -X POST -H "Content-Type: application/json" --data-binary @"$FILE" "$DEST" \
                   && echo "[zcmd] Upload erfolgreich" > /dev/console \
                   || echo "[zcmd] Upload fehlgeschlagen" > /dev/console
             else
                 echo "[zcmd] WARN: $FILE nicht gefunden – kein Upload" > /dev/console
             fi
-            # dmesg hochladen
-            DMESG_TMP="/tmp/dmesg.txt"
-            dmesg > "$DMESG_TMP"
-            echo "[zcmd] Sende dmesg an $DEST" > /dev/console
-            curl -s -X POST -H "Content-Type: text/plain" --data-binary @"$DMESG_TMP" "$DEST?type=dmesg" \
-              && echo "[zcmd] dmesg Upload erfolgreich" > /dev/console \
-              || echo "[zcmd] dmesg Upload fehlgeschlagen" > /dev/console
-
-            # logread (Systemlog) hochladen
-            SYSLOG_TMP="/tmp/syslog.txt"
-            logread > "$SYSLOG_TMP"
-            echo "[zcmd] Sende Systemlog an $DEST" > /dev/console
-            curl -s -X POST -H "Content-Type: text/plain" --data-binary @"$SYSLOG_TMP" "$DEST?type=syslog" \
-             && echo "[zcmd] Syslog Upload erfolgreich" > /dev/console \
-             || echo "[zcmd] Syslog Upload fehlgeschlagen" > /dev/console
             ) &
         # ------------------------------------------------------- 
     ```

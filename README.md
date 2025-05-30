@@ -23,23 +23,26 @@ Since you can not access the EFS system of the modem you need to access these fi
 
 [USB-Functionality](usb/README.md)
 
-## "Miracle" Adding eSIM Functionality
+## Missing eSIM Functionality for DTAG devices
 
-Devices from Telenor and A1 have eSIM support enabled by default. However, DTAG (Deutsche Telekom) devices are not equipped with this feature by default.
-This is not a firmware problem; it is a modem configuration issue. Even cross-flashed DTAG devices can be affected (TAKE CARE: cross-flashing without proper preparation can soft-brick your device).
+Devices without eSIM functionality, such as DTAG devices, have the modem version RG520F-EB Q1-C0752 installed. These devices do not have the eUICC chip for eSIM functionality. It is not soldered in.
 
-If you have a valid eID added to the zcfg_config.json file, the eSIM functionality will work even with DTAG firmware. However, at the time of writing, I could not find a way to locate the eID. The eID is empty by default in DTAG configurations, so the eSIM menu is missing in the WebUI. The app does not receive the flag "esim_supported:true" and does not allow you to add an eSIM profile. Adding a fake eID brings up the menu, but you won't be able to add the eSIM or connect.
+![DTAG Modem](firmware/imgs/dtag_modem.JPG)
 
-At the time of writing, my findings are leading me towards the EFS/nv_item file uim_hw_config, which is responsible for activating and deactivating SIM slots. I cannot validate my hypothesis until I receive a uim_hw_config from an eSIM-activated modem.
+Devices that have eSIM functionality, such as those from A1 Austria or Telenor Norway, have the corresponding chip. The modem revisions installed are version: RF520F-EB Q1-C1751.
 
-Telenor users can easily extract this file using EFS Explorer. In contrast, A1 users would need to solder the USB port.
+![Telenor Modem](firmware/imgs/telenor_modem.JPG)
 
-I've extracted all the valid AT commands for the modem firmware, which showed that writing NVRAM values is only possible up to index 7300, and that EFS files cannot be opened. Therefore, without Qualcomm access, I don't see an option to edit the modem's EFS files. I was also unsuccessful in mirroring the DIAG port to the router OS.
+![eSIM Chipset](firmware/imgs/esim_chipset.jpg)
+
+It may be possible to solder in an eUICC chip. One possible candidate for retrofitting eSIM functionality on the hardware side would be the ST4SI2M0020TPIFW chip.
 
 
 ## Telenor Devices
 
-They have their own section... The devices are practically unmanageable by the user. In the delivery state and after resetting the devices, a configuration is imported that leaves the 'BootFromFactoryDefault' option set to true. This deletes any configuration changes when booting. However, as the devices have a USB port, the configuration can easily be changed via ADB Shell. Telenor has come up with even more gifts for its customers which you can edit to gain permanent access. You have to change several setting in /xdata/zcfg_config.json. 
+They have their own section... The devices are practically unmanageable by the user. In the delivery state and after resetting the devices, a configuration is imported that leaves the 'BootFromFactoryDefault' option set to true. This deletes any configuration changes when booting. However, as the devices have a USB port, the configuration can easily be changed via ADB Shell. Telenor has come up with even more gifts for its customers which you can edit to gain permanent access. 
+You have to change several setting in /xdata/zcfg_config.json. 
+
 **First of course you have to change the BootFromFactoryDefault setting to false!**
 - The DHCP server is deactivated. To activate, set Enable to true:
     ```"DHCPv4":{
@@ -69,3 +72,21 @@ They have their own section... The devices are practically unmanageable by the u
 ```
 
 The Telenor devices receive updates via a special Telenor server. Updates are only made available if the router is logged into the Telenor network. If you are running a Telenor NR7302 device without a telenor IP, you could consider cross-flashing the device to a more customer-friendly version. 
+
+
+## Cross-Flashing
+
+Warning: These steps are WIP. It must be expected that attempting to flash a device from one firmware to another may result in a soft or hard brick. No responsibility is accepted for this.
+
+All NR7302 devices can also be flashed with firmware from other providers. However, if certain things are not taken into account, this can result in a soft brick, which in the worst case may require soldering a USB port.
+
+### Example: Telenor 2 DTAG (Deutsche Telekom):
+- Gain Root Access + activate supervisor account in zcfg_config.json (Root Password == Supervisor Password)
+- Login into Web UI with supervisor account 
+- Navigate to: Maintanance -> Backup/Restore -> ROM-D
+- IMPORTANT: Backup ROM-D Configuration (eID is saved inside of this file)
+- Clear ROM-D Configuration
+- Navigate: Maintanance -> Firmware Upgrade 
+- IMPORTANT: Activate/Check "Restore Default Settings After Firmware Upgrade"
+- Upload new Firmware File (Does not work in Apple Safari)
+- Wair for Reboot: LEDs will flash red, green, yellow

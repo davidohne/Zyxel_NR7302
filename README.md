@@ -11,6 +11,15 @@ If you lost or never received the admin password for the devices, there is a sol
 
 [Firmware-Editing](firmware/README.md)
 
+## Read-only Password Dump via EDL (no flashing)
+
+A non-destructive alternative that does **not** require editing/flashing firmware: put the modem
+into Qualcomm EDL (9008) mode with a hardware short, read the config partition read-only with a
+firehose loader, and **decrypt the `_encrypt_...` passwords offline** (no WebUI oracle needed). The
+offline decryptor and the full step-by-step are here:
+
+[EDL dump + offline decryption](edl/README.md)
+
 ## Flash a Firmware with Zycast
 
 If you soft-bricked your device or you don't have access to SSH/WebUI you can flash a valid firmware file via zycast multicast flash method. A detailed description is here:
